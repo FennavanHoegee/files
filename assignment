@@ -1,40 +1,40 @@
 __winc_id__ = "ae539110d03e49ea8738fd413ac44ba8"
 __human_name__ = "files"
 
-from functools import cache
-from os import mkdir
-import shutil
-import os
+import os 
+import shutil 
 import zipfile
 
+os.chdir('files')
+current_folder=os.getcwd()
+print(current_folder)
+uiteindelijke_folder= os.path.join(current_folder, r'cache')
+print(uiteindelijke_folder)
 
 def clean_cache():
-    pad = "C:\\Users\\FennavanHoegee\\Documents\\Winc\\hello\\files\\cache"
-    if os.path.exists(pad):
-        shutil.rmtree(pad)
-    os.makedirs(pad)
+    uiteindelijke_folder= os.path.join(current_folder, r'cache')
+    if os.path.exists(uiteindelijke_folder):
+        shutil.rmtree(r'cache')
+    os.makedirs(uiteindelijke_folder)
 
+clean_cache()
 
 def cache_zip(zip_file_path, cache_dir_path):
-    with zipfile.ZipFile(zip_file_path, "r") as zip:
-        zip.printdir()
-        print("unpacking")
-        zip.extractall(cache_dir_path)
-        print("Klaar")
+    with zipfile.ZipFile(zip_file_path, 'r') as zip_bestand:
+        zip_bestand.printdir()
+        zip_bestand.extractall(cache_dir_path)
 
+cz=os.path.join(current_folder, r'data.zip')
+cache_zip(cz, uiteindelijke_folder)
 
 def cached_files():
-    pad = os.path.abspath(
-        "C:\\Users\\FennavanHoegee\\Documents\\Winc\\hello\\files\\cache"
-    )
     lijst_bestanden = []
-    for bestand in os.listdir(pad):
-        x = os.path.join(pad, bestand)
+    for bestand in os.listdir(uiteindelijke_folder):
+        x = os.path.join(uiteindelijke_folder, bestand)
         if os.path.isfile(x):
             if not bestand in lijst_bestanden:
                 lijst_bestanden.append(x)
     return lijst_bestanden
-
 
 x = cached_files()
 
@@ -46,8 +46,6 @@ def find_password(x):
             content = file.readlines()
             for line in content:
                 if line.find(word) != -1:
-                    yes = line
                     spatie_index = line.rfind(" ")
                     password = line[spatie_index + 1 :]
     return password
-
